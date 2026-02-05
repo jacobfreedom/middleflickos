@@ -13,7 +13,7 @@ final class PermissionWindowController: NSObject {
         }
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 420, height: 190),
+            contentRect: NSRect(x: 0, y: 0, width: 460, height: 230),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -24,16 +24,35 @@ final class PermissionWindowController: NSObject {
 
         guard let contentView = window.contentView else { return }
 
+        let iconView = NSImageView()
+        if let icon = NSImage(named: "AppIcon") {
+            iconView.image = icon
+        } else {
+            iconView.image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleClick")
+        }
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.imageScaling = .scaleProportionallyUpOrDown
+        NSLayoutConstraint.activate([
+            iconView.widthAnchor.constraint(equalToConstant: 48),
+            iconView.heightAnchor.constraint(equalToConstant: 48)
+        ])
+
+        let titleField = NSTextField(labelWithString: "Enable Accessibility")
+        titleField.font = .boldSystemFont(ofSize: 15)
+
         let messageField = NSTextField(wrappingLabelWithString:
-            "MiddleClick needs Accessibility permission to convert " +
-            "Fn+Click to Middle Click.\n\n" +
-            "Please enable it in System Settings → Privacy & Security → " +
-            "Accessibility. This app will activate automatically once " +
-            "permission is granted."
+            "MiddleClick needs Accessibility permission to convert Fn+Click " +
+            "into a Middle Click.\n\n" +
+            "Open System Settings → Privacy & Security → Accessibility, " +
+            "then enable MiddleFlickOS. This app will activate automatically " +
+            "once permission is granted."
         )
-        messageField.isEditable = false
-        messageField.isSelectable = false
         messageField.font = .systemFont(ofSize: 13)
+
+        let headerStack = NSStackView(views: [iconView, titleField])
+        headerStack.orientation = .horizontal
+        headerStack.alignment = .centerY
+        headerStack.spacing = 12
 
         let openButton = NSButton(
             title: "Open System Settings",
@@ -50,23 +69,30 @@ final class PermissionWindowController: NSObject {
         )
         checkButton.bezelStyle = .rounded
 
-        for view in [messageField, openButton, checkButton] as [NSView] {
+        let buttonStack = NSStackView(views: [checkButton, openButton])
+        buttonStack.orientation = .horizontal
+        buttonStack.alignment = .centerY
+        buttonStack.spacing = 8
+        buttonStack.distribution = .fill
+
+        let contentStack = NSStackView(views: [headerStack, messageField, buttonStack])
+        contentStack.orientation = .vertical
+        contentStack.alignment = .leading
+        contentStack.spacing = 14
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+
+        for view in [headerStack, messageField, buttonStack] {
             view.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview(view)
         }
 
+        contentView.addSubview(contentStack)
+
         NSLayoutConstraint.activate([
-            messageField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            messageField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            messageField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-
-            openButton.topAnchor.constraint(equalTo: messageField.bottomAnchor, constant: 20),
-            openButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-
-            checkButton.centerYAnchor.constraint(equalTo: openButton.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: openButton.leadingAnchor, constant: -8),
-
-            openButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            contentStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            contentStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            contentStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            contentStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            buttonStack.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor)
         ])
 
         window.center()

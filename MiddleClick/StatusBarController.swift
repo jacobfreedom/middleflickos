@@ -30,9 +30,11 @@ final class StatusBarController: NSObject {
             if let image = NSImage(named: "MenuBarIcon") {
                 image.isTemplate = true
                 button.image = image
+                button.image?.isTemplate = true
             } else if let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleClick") {
                 image.isTemplate = true
                 button.image = image
+                button.image?.isTemplate = true
             } else {
                 button.title = "MC"
             }

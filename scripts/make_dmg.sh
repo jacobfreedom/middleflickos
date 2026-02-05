@@ -41,6 +41,7 @@ hdiutil create \
   -volname "$APP_NAME" \
   -srcfolder "$STAGING" \
   -ov \
+  -fs HFS+ \
   -format UDZO \
   "$DMG_OUT"
 
