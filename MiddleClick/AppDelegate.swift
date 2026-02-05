@@ -37,6 +37,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private static let loginItemPromptKey = "loginItemPromptShown"
     private static let accessibilityPromptKey = "accessibilityPromptShown"
+    
+    private var appName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "MiddleFlickOS"
+    }
 
     // MARK: - Launch
 
@@ -59,13 +63,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
         if let button = statusItem.button {
-            button.image = NSImage(
-                systemSymbolName: "computermouse.fill",
-                accessibilityDescription: "MiddleClick"
-            )
-            if button.image == nil {
-                button.title = "MC"
-            }
+            let image = makeStatusBarIcon()
+            image.isTemplate = true
+            button.image = image
+            button.imagePosition = .imageOnly
+            button.toolTip = appName
+            button.setAccessibilityTitle(appName)
         }
 
         rebuildMenu(trusted: false)
@@ -102,15 +105,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(sep)
         }
 
+        // About — always present
         let aboutItem = NSMenuItem(
-            title: "About MiddleClick…",
+            title: "About \(appName)…",
             action: #selector(showAbout),
             keyEquivalent: ""
         )
         aboutItem.target = self
         menu.addItem(aboutItem)
 
-        // Quit — the ONLY way the app terminates
+        // Quit — always last
         menu.addItem(NSMenuItem(
             title: "Quit",
             action: #selector(NSApplication.terminate(_:)),
@@ -118,6 +122,55 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ))
 
         self.statusItem.menu = menu
+    }
+
+    /// Draws a minimalist, geometric middle-finger-style glyph for the menu bar.
+    private func makeStatusBarIcon(size: CGFloat = 18) -> NSImage {
+        let img = NSImage(size: NSSize(width: size, height: size))
+        img.lockFocus()
+        defer { img.unlockFocus() }
+
+        let w = size
+        let h = size
+        NSColor.clear.setFill()
+        NSBezierPath(rect: NSRect(x: 0, y: 0, width: w, height: h)).fill()
+
+        let fg = NSColor.black
+        fg.setFill()
+
+        // Proportions
+        let palmWidth: CGFloat = 0.62 * w
+        let palmHeight: CGFloat = 0.26 * h
+        let palmX = (w - palmWidth) / 2
+        let palmY: CGFloat = 0.12 * h
+
+        let fingerGap: CGFloat = 0.06 * w
+        let fingerWidth: CGFloat = (palmWidth - 2 * fingerGap) / 3
+        let leftFingerHeight: CGFloat = 0.38 * h
+        let middleFingerHeight: CGFloat = 0.58 * h
+        let rightFingerHeight: CGFloat = 0.42 * h
+        let fingerBottom = palmY + palmHeight + (0.02 * h)
+
+        let corner: CGFloat = max(1, size * 0.08)
+
+        func roundedRect(_ rect: NSRect, radius: CGFloat) {
+            let path = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
+            path.fill()
+        }
+
+        // Palm
+        roundedRect(NSRect(x: palmX, y: palmY, width: palmWidth, height: palmHeight), radius: corner)
+
+        // Fingers (left, middle, right)
+        let leftX = palmX
+        let midX = palmX + fingerWidth + fingerGap
+        let rightX = palmX + 2 * (fingerWidth + fingerGap)
+
+        roundedRect(NSRect(x: leftX, y: fingerBottom, width: fingerWidth, height: leftFingerHeight), radius: corner)
+        roundedRect(NSRect(x: midX, y: fingerBottom, width: fingerWidth, height: middleFingerHeight), radius: corner)
+        roundedRect(NSRect(x: rightX, y: fingerBottom, width: fingerWidth, height: rightFingerHeight), radius: corner)
+
+        return img
     }
 
     @objc private func openSystemSettings() {
@@ -129,7 +182,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
         let alert = NSAlert()
-        alert.messageText = "MiddleClick"
+        alert.messageText = appName
         let versionLine = version.isEmpty ? "" : "Version \(version)"
         let buildLine = build.isEmpty ? "" : " (\(build))"
         alert.informativeText = versionLine.isEmpty && buildLine.isEmpty ? "" : versionLine + buildLine
@@ -149,7 +202,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "MiddleClick Setup"
+        window.title = "\(appName) Setup"
         window.isReleasedWhenClosed = false
         window.level = .normal
 
@@ -158,9 +211,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // ── Build subviews ──
 
         let messageField = NSTextField(wrappingLabelWithString:
-            "MiddleClick needs Accessibility permission to convert " +
+            "\(appName) needs Accessibility permission to convert " +
             "Fn+Click to Middle Click.\n\n" +
-            "Click \"Open System Settings\" and enable MiddleClick in " +
+            "Click \"Open System Settings\" and enable \(appName) in " +
             "Privacy & Security → Accessibility. This app will activate " +
             "automatically once permission is granted."
         )
@@ -344,8 +397,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func showLoginItemAlert() {
         let alert = NSAlert()
         alert.messageText = "Start at Login?"
-        alert.informativeText =
-            "Would you like MiddleClick to launch automatically when you log in?"
+        alert.informativeText = "Would you like \(appName) to launch automatically when you log in?"
         alert.alertStyle = .informational
         alert.addButton(withTitle: "Yes")
         alert.addButton(withTitle: "No")
