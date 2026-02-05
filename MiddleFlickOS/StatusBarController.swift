@@ -28,11 +28,11 @@ final class StatusBarController: NSObject {
     private func configureIcon() {
         if let button = statusItem.button {
             let dimension = NSStatusBar.system.thickness
-            if let image = NSImage(named: "AppIcon") {
+            if let image = NSImage(named: "MenuBarIcon") {
                 image.isTemplate = false
                 image.size = NSSize(width: dimension, height: dimension)
                 button.image = image
-                button.image?.isTemplate = true
+                button.image?.isTemplate = false
             } else if let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleFlickOS") {
                 image.isTemplate = true
                 image.size = NSSize(width: dimension, height: dimension)

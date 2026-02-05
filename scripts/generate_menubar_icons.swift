@@ -2,23 +2,23 @@
 import AppKit
 import Foundation
 
-func makeMenuBarIcon(size: CGFloat, yOffset: CGFloat, insetRatio: CGFloat) -> NSImage {
+func makeIconImage(size: CGFloat = 1024, background: NSColor = .clear, foreground: NSColor = .black) -> NSImage {
     let img = NSImage(size: NSSize(width: size, height: size))
     img.lockFocus()
     defer { img.unlockFocus() }
 
-    NSColor.clear.setFill()
-    NSBezierPath(rect: NSRect(x: 0, y: 0, width: size, height: size)).fill()
+    let w = size
+    let h = size
 
-    let inset = size * insetRatio
-    let w = size - inset * 2
-    let h = size - inset * 2
-    let originX = inset
-    let originY = inset
+    // Background
+    background.setFill()
+    NSBezierPath(rect: NSRect(x: 0, y: 0, width: w, height: h)).fill()
 
-    NSColor.black.setFill()
+    // Foreground
+    foreground.setFill()
 
-    let corner: CGFloat = max(1.5, w * 0.10)
+    // Rounded corner radius
+    let corner: CGFloat = max(8, size * 0.03)
     func roundedRect(_ rect: NSRect) {
         let path = NSBezierPath(roundedRect: rect, xRadius: corner, yRadius: corner)
         path.fill()
@@ -27,8 +27,8 @@ func makeMenuBarIcon(size: CGFloat, yOffset: CGFloat, insetRatio: CGFloat) -> NS
     // Palm
     let palmWidth: CGFloat = 0.44 * w
     let palmHeight: CGFloat = 0.22 * h
-    let palmX = originX + (w - palmWidth) / 2
-    let palmY: CGFloat = originY + 0.18 * h + yOffset
+    let palmX = (w - palmWidth) / 2
+    let palmY: CGFloat = 0.18 * h
     roundedRect(NSRect(x: palmX, y: palmY, width: palmWidth, height: palmHeight))
 
     // Fingers
@@ -61,22 +61,18 @@ func writePNG(_ image: NSImage, to url: URL) throws {
 
 let args = CommandLine.arguments
 if args.count < 2 {
-    fputs("Usage: generate_menubar_icons.swift /path/to/MenuBarIcon.imageset\n", stderr)
+    fputs("Usage: generate_menubar_icons.swift /path/to/output_1024.png\n", stderr)
     exit(2)
 }
+let outputPath = args[1]
+let url = URL(fileURLWithPath: outputPath)
 
-let outDir = URL(fileURLWithPath: args[1], isDirectory: true)
+let image = makeIconImage(size: 1024, background: .clear, foreground: .white)
 
-let sizes: [(CGFloat, String)] = [
-    (22, "MenuBarIcon_22.png"),
-    (44, "MenuBarIcon_44.png"),
-    (66, "MenuBarIcon_66.png")
-]
-
-for (size, name) in sizes {
-    // 22px canvas with ~16px glyph area is a common, crisp baseline.
-    let icon = makeMenuBarIcon(size: size, yOffset: -0.01 * size, insetRatio: 0.14)
-    let url = outDir.appendingPathComponent(name)
-    try writePNG(icon, to: url)
-    print("Wrote \(url.path)")
+do {
+    try writePNG(image, to: url)
+    print("Wrote 1024px menubar base icon to: \(url.path)")
+} catch {
+    fputs("Error: \(error)\n", stderr)
+    exit(1)
 }
