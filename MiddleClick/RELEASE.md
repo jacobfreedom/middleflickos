@@ -8,8 +8,11 @@
    - Hardened Runtime: enabled.
    - App Sandbox: disabled.
 3. Set app metadata (name, bundle id, agent mode)
-   - Run: `scripts/set_metadata.sh /path/to/Info.plist "MiddleFlickOS" com.yourcompany.MiddleFlickOS`
+   - Run: `scripts/set_metadata.sh /path/to/Info.plist "MiddleFlickOS" com.rolledhand.MiddleFlickOS`
    - This sets CFBundleName/DisplayName, CFBundleIdentifier, and LSUIElement=1 (menu-bar-only app).
+   - In Xcode, also rename the Target to "MiddleFlickOS" (Project Navigator → select target → Rename).
+   - When prompted, let Xcode rename the Scheme as well.
+   - Verify the Bundle Identifier now shows `com.rolledhand.MiddleFlickOS` in target settings (General tab).
 4. App icon
    - Generate a minimalist icon: `scripts/generate_app_icon.swift ./MiddleFlickOS_1024.png`
    - Build the app icon set: `scripts/build_appiconset.sh ./MiddleFlickOS_1024.png ./Assets.xcassets/AppIcon.appiconset`

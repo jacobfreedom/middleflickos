@@ -39,12 +39,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private static let accessibilityPromptKey = "accessibilityPromptShown"
     
     private var appName: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "MiddleFlickOS"
+        return "MiddleFlickOS"
     }
 
     // MARK: - Launch
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.accessory)
         // 1. Menu bar is ALWAYS set up first — user can always see the icon and quit
         setupMenuBar()
 
@@ -124,7 +125,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.statusItem.menu = menu
     }
 
-    /// Draws a minimalist, geometric middle-finger-style glyph for the menu bar.
+    /// Draws a minimalist, geometric middle-finger-style glyph for the menu bar using hard-edged rectangles and a left thumb.
     private func makeStatusBarIcon(size: CGFloat = 18) -> NSImage {
         let img = NSImage(size: NSSize(width: size, height: size))
         img.lockFocus()
@@ -132,43 +133,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let w = size
         let h = size
+
+        // Clear background
         NSColor.clear.setFill()
         NSBezierPath(rect: NSRect(x: 0, y: 0, width: w, height: h)).fill()
 
-        let fg = NSColor.black
-        fg.setFill()
+        // Foreground color (template image will be tinted by system)
+        NSColor.black.setFill()
 
-        // Proportions
-        let palmWidth: CGFloat = 0.62 * w
+        // Palm (hard-edged rectangle)
+        let palmWidth: CGFloat = 0.60 * w
         let palmHeight: CGFloat = 0.26 * h
         let palmX = (w - palmWidth) / 2
         let palmY: CGFloat = 0.12 * h
+        NSBezierPath(rect: NSRect(x: palmX, y: palmY, width: palmWidth, height: palmHeight)).fill()
 
+        // Fingers (hard-edged rectangles)
         let fingerGap: CGFloat = 0.06 * w
         let fingerWidth: CGFloat = (palmWidth - 2 * fingerGap) / 3
-        let leftFingerHeight: CGFloat = 0.38 * h
-        let middleFingerHeight: CGFloat = 0.58 * h
-        let rightFingerHeight: CGFloat = 0.42 * h
+        let leftFingerHeight: CGFloat = 0.40 * h
+        let middleFingerHeight: CGFloat = 0.62 * h
+        let rightFingerHeight: CGFloat = 0.44 * h
         let fingerBottom = palmY + palmHeight + (0.02 * h)
 
-        let corner: CGFloat = max(1, size * 0.08)
-
-        func roundedRect(_ rect: NSRect, radius: CGFloat) {
-            let path = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
-            path.fill()
-        }
-
-        // Palm
-        roundedRect(NSRect(x: palmX, y: palmY, width: palmWidth, height: palmHeight), radius: corner)
-
-        // Fingers (left, middle, right)
         let leftX = palmX
         let midX = palmX + fingerWidth + fingerGap
         let rightX = palmX + 2 * (fingerWidth + fingerGap)
 
-        roundedRect(NSRect(x: leftX, y: fingerBottom, width: fingerWidth, height: leftFingerHeight), radius: corner)
-        roundedRect(NSRect(x: midX, y: fingerBottom, width: fingerWidth, height: middleFingerHeight), radius: corner)
-        roundedRect(NSRect(x: rightX, y: fingerBottom, width: fingerWidth, height: rightFingerHeight), radius: corner)
+        NSBezierPath(rect: NSRect(x: leftX, y: fingerBottom, width: fingerWidth, height: leftFingerHeight)).fill()
+        NSBezierPath(rect: NSRect(x: midX, y: fingerBottom, width: fingerWidth, height: middleFingerHeight)).fill()
+        NSBezierPath(rect: NSRect(x: rightX, y: fingerBottom, width: fingerWidth, height: rightFingerHeight)).fill()
+
+        // Thumb (left side, hard-edged rectangle)
+        let thumbWidth: CGFloat = 0.22 * palmWidth
+        let thumbHeight: CGFloat = 0.28 * h
+        let thumbX = palmX - thumbWidth * 0.6
+        let thumbY = palmY + palmHeight * 0.35
+        NSBezierPath(rect: NSRect(x: thumbX, y: thumbY, width: thumbWidth, height: thumbHeight)).fill()
 
         return img
     }
