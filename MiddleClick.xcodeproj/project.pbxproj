@@ -10,6 +10,7 @@
 		A1000001 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001 /* main.swift */; };
 		A1000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002 /* AppDelegate.swift */; };
 		A1000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000003 /* Assets.xcassets */; };
+		C20995C72F34B4FE008F5C5F /* RELEASE.md in Resources */ = {isa = PBXBuildFile; fileRef = C20995C62F34B4FE008F5C5F /* RELEASE.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		A2000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2000005 /* MiddleClick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiddleClick.entitlements; sourceTree = "<group>"; };
 		A2000006 /* MiddleClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiddleClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C20995C62F34B4FE008F5C5F /* RELEASE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = RELEASE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 				A2000003 /* Assets.xcassets */,
 				A2000004 /* Info.plist */,
 				A2000005 /* MiddleClick.entitlements */,
+				C20995C62F34B4FE008F5C5F /* RELEASE.md */,
 			);
 			path = MiddleClick;
 			sourceTree = "<group>";
@@ -118,6 +121,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C20995C72F34B4FE008F5C5F /* RELEASE.md in Resources */,
 				A1000003 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,7 +270,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = A8000001 /* Project object */;
 }

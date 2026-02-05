@@ -102,6 +102,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(sep)
         }
 
+        let aboutItem = NSMenuItem(
+            title: "About MiddleClick…",
+            action: #selector(showAbout),
+            keyEquivalent: ""
+        )
+        aboutItem.target = self
+        menu.addItem(aboutItem)
+
         // Quit — the ONLY way the app terminates
         menu.addItem(NSMenuItem(
             title: "Quit",
@@ -115,6 +123,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc private func openSystemSettings() {
         openAccessibilitySettings()
         promptAccessibilityIfNeeded()
+    }
+
+    @objc private func showAbout() {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        let alert = NSAlert()
+        alert.messageText = "MiddleClick"
+        let versionLine = version.isEmpty ? "" : "Version \(version)"
+        let buildLine = build.isEmpty ? "" : " (\(build))"
+        alert.informativeText = versionLine.isEmpty && buildLine.isEmpty ? "" : versionLine + buildLine
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 
     // MARK: - Permission Window (non-modal NSWindow)
@@ -139,9 +160,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let messageField = NSTextField(wrappingLabelWithString:
             "MiddleClick needs Accessibility permission to convert " +
             "Fn+Click to Middle Click.\n\n" +
-            "Please enable it in the System Settings window that just " +
-            "opened. This app will activate automatically once permission " +
-            "is granted."
+            "Click \"Open System Settings\" and enable MiddleClick in " +
+            "Privacy & Security → Accessibility. This app will activate " +
+            "automatically once permission is granted."
         )
         messageField.isEditable = false
         messageField.isSelectable = false
@@ -426,3 +447,4 @@ private func eventTapCallback(
         return Unmanaged.passRetained(event)
     }
 }
+
