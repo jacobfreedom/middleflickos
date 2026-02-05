@@ -27,12 +27,15 @@ final class StatusBarController: NSObject {
 
     private func configureIcon() {
         if let button = statusItem.button {
-            if let image = NSImage(named: "MenuBarIcon") {
-                image.isTemplate = true
+            let dimension = NSStatusBar.system.thickness
+            if let image = NSImage(named: "AppIcon") {
+                image.isTemplate = false
+                image.size = NSSize(width: dimension, height: dimension)
                 button.image = image
                 button.image?.isTemplate = true
-            } else if let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleClick") {
+            } else if let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleFlickOS") {
                 image.isTemplate = true
+                image.size = NSSize(width: dimension, height: dimension)
                 button.image = image
                 button.image?.isTemplate = true
             } else {

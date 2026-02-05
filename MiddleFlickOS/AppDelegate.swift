@@ -22,6 +22,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             activateIfNeeded()
         } else {
             permissionWindow.show()
+            // Ensure the app appears in Accessibility list on first launch.
+            accessibility.requestPermissionOnce()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                self?.openAccessibilitySettings()
+            }
         }
     }
 
@@ -36,6 +41,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         permissionWindow.onCheckAgain = { [weak self] in
             self?.accessibility.refreshTrust()
+        }
+
+        permissionWindow.onAddToAccessibility = { [weak self] in
+            self?.showAddToAccessibilityPanel()
         }
 
         accessibility.onTrustedChange = { [weak self] trusted in
@@ -59,6 +68,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func openAccessibilitySettings() {
         accessibility.openAccessibilitySettings()
         accessibility.requestPermissionOnce()
+    }
+
+    private func showAddToAccessibilityPanel() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.allowedFileTypes = ["app"]
+        panel.directoryURL = URL(fileURLWithPath: "/Applications", isDirectory: true)
+        panel.nameFieldStringValue = "MiddleFlickOS.app"
+
+        panel.begin { [weak self] response in
+            guard response == .OK else { return }
+            _ = self?.accessibility.requestPermissionOnce()
+            self?.accessibility.refreshTrust()
+        }
     }
 
     private func activateIfNeeded() {
@@ -97,7 +122,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let alert = NSAlert()
         alert.messageText = "Start at Login?"
         alert.informativeText =
-            "Would you like MiddleClick to launch automatically when you log in?"
+            "Would you like MiddleFlickOS to launch automatically when you log in?"
         alert.alertStyle = .informational
         alert.addButton(withTitle: "Yes")
         alert.addButton(withTitle: "No")

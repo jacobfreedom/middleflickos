@@ -3,6 +3,8 @@ import ApplicationServices
 
 final class AccessibilityController {
     private static let promptKey = "accessibilityPromptShown"
+    private static let promptLastDateKey = "accessibilityPromptLastDate"
+    private static let promptCooldownSeconds: TimeInterval = 10
 
     private var pollTimer: Timer?
     private var observers: [NSObjectProtocol] = []
@@ -35,17 +37,18 @@ final class AccessibilityController {
     }
 
     func requestPermissionOnce() {
-        if UserDefaults.standard.bool(forKey: Self.promptKey) {
-            return
-        }
-
         if checkTrusted(prompt: false) {
             UserDefaults.standard.set(true, forKey: Self.promptKey)
             return
         }
 
+        let lastPrompt = UserDefaults.standard.object(forKey: Self.promptLastDateKey) as? Date
+        if let lastPrompt, Date().timeIntervalSince(lastPrompt) < Self.promptCooldownSeconds {
+            return
+        }
+
         _ = checkTrusted(prompt: true)
-        UserDefaults.standard.set(true, forKey: Self.promptKey)
+        UserDefaults.standard.set(Date(), forKey: Self.promptLastDateKey)
     }
 
     func openAccessibilitySettings() {

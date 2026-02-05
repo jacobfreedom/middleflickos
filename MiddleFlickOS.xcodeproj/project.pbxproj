@@ -22,7 +22,7 @@
 		A2000002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A2000003 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2000005 /* MiddleClick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiddleClick.entitlements; sourceTree = "<group>"; };
+		A2000005 /* MiddleFlickOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiddleFlickOS.entitlements; sourceTree = "<group>"; };
 		A2000006 /* MiddleFlickOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiddleFlickOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2000007 /* AccessibilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityController.swift; sourceTree = "<group>"; };
 		A2000008 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
@@ -45,12 +45,12 @@
 		A4000001 = {
 			isa = PBXGroup;
 			children = (
-				A4000002 /* MiddleClick */,
+				A4000002 /* MiddleFlickOS */,
 				A4000003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A4000002 /* MiddleClick */ = {
+		A4000002 /* MiddleFlickOS */ = {
 			isa = PBXGroup;
 			children = (
 				A2000001 /* main.swift */,
@@ -61,10 +61,10 @@
 				A2000010 /* EventTapManager.swift */,
 				A2000003 /* Assets.xcassets */,
 				A2000004 /* Info.plist */,
-				A2000005 /* MiddleClick.entitlements */,
+				A2000005 /* MiddleFlickOS.entitlements */,
 				C20995C62F34B4FE008F5C5F /* RELEASE.md */,
 			);
-			path = MiddleClick;
+			path = MiddleFlickOS;
 			sourceTree = "<group>";
 		};
 		A4000003 /* Products */ = {
@@ -91,7 +91,7 @@
 			dependencies = (
 			);
 			name = MiddleFlickOS;
-			productName = MiddleClick;
+			productName = MiddleFlickOS;
 			productReference = A2000006 /* MiddleFlickOS.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -269,7 +269,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = MiddleClick/MiddleClick.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MiddleFlickOS/MiddleFlickOS.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -277,7 +277,8 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = MiddleClick/Info.plist;
+				INFOPLIST_FILE = MiddleFlickOS/Info.plist;
+				INFOPLIST_KEY_CFBundleName = MiddleFlickOS;
 				INFOPLIST_KEY_CFBundleDisplayName = MiddleFlickOS;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -297,7 +298,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = MiddleClick/MiddleClick.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MiddleFlickOS/MiddleFlickOS.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -305,7 +306,8 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = MiddleClick/Info.plist;
+				INFOPLIST_FILE = MiddleFlickOS/Info.plist;
+				INFOPLIST_KEY_CFBundleName = MiddleFlickOS;
 				INFOPLIST_KEY_CFBundleDisplayName = MiddleFlickOS;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
