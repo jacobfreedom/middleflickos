@@ -76,9 +76,11 @@ Yes. Blender, Maya, C4D, Houdini, ZBrush, whatever. It's an OS-level event — i
 Eventually. Or fork it and fix it. PRs welcome.
 
 **Can I donate?**
-If enough people chip in to cover the $99 Apple developer fee, I'll code-sign it so you don't have to bypass Gatekeeper. Hit me up:
+If enough people chip in to cover the $99 Apple developer fee, I'll code-sign it so you don't have to bypass Gatekeeper. Maybe even buy a proper domain. Hit me up:
 - Instagram: [@rolledhand](https://instagram.com/rolledhand)
 - Discord: `rolledhand`
+
+Eitherway I built this for myself and it covers my needs already.
 
 ---
 

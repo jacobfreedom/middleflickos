@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Build artifacts
+DerivedData/
+build/
+
+# Claude Code
+.claude/
+
+# Archives
+*.xcarchive
