@@ -2,91 +2,118 @@
 
 _middle click on macOS_
 
-Converts Fn + Left Click into a Middle Click at the OS level. Built for rotating 3D viewports on macOS with a trackpad. If you're a 3D artist, this is for you. If not… neat that you're here anyway.
+Fn + Click -> Middle Click.  
+OS-level. No config. No menus. No bloat.
 
-- macOS 12+ (Monterey or later)
+- macOS 12+
 - Intel + Apple Silicon
-- ~83 KB app
+- ~83 KB
 - [MIT License](LICENSE)
 
-[Download MiddleFlickOS.dmg](https://github.com/jacobfreedom/middle-click-macos-app/raw/main/MiddleFlickOS.dmg)
+## Links
+
+- Website: [middleflickos.vercel.app](https://middleflickos.vercel.app)
+- Download: [MiddleFlickOS.dmg](https://github.com/jacobfreedom/middle-click-macos-app/raw/main/MiddleFlickOS.dmg)
+- Source: [github.com/jacobfreedom/middleflickos](https://github.com/jacobfreedom/middleflickos)
 
 ---
 
-## What it does
+## 01 / FUNCTION
 
-- **Input:** Fn + Click
-- **Output:** Middle-click event
+**INPUT**: Fn + Click  
+**OUTPUT**: Middle-click event
 
-Works across apps: Blender, Maya, Cinema 4D, Houdini, ZBrush, browsers, and more. It's an OS-level event.
+If an app accepts middle-click, this works.
 
-> **Known limitation:** External keyboards aren't supported yet (built for the MacBook keyboard only). PRs welcome.
+- Blender
+- Maya
+- Cinema 4D
+- Houdini
+- ZBrush
+- Browsers
+- Anything else reading mouse input
+
+> Known limitation: external keyboards are not supported yet (MacBook keyboard only).
 
 ---
 
-## How it works
+## 02 / HOW IT WORKS
 
-MiddleFlickOS installs a [CGEvent tap](https://developer.apple.com/documentation/coregraphics/cgeventtap) at the session level. When it detects a left mouse button press with the Fn flag set, it synthesizes a middle-click event and suppresses the original. Drag and release events are handled the same way to support viewport orbiting.
+MiddleFlickOS installs a [CGEvent tap](https://developer.apple.com/documentation/coregraphics/cgeventtap) at session level.
 
-That's the entire app. No background services, no daemons, no configuration files.
+When left mouse down/up/drag is detected with Fn pressed, it emits middle-click equivalents and suppresses the original left-click path.
+
+That’s the app.
 
 ---
 
-## Installation
+## 03 / INSTALL
 
-**1. Download**
+### 1) Download
 
-Download the [`.dmg`](https://github.com/jacobfreedom/middle-click-macos-app/raw/main/MiddleFlickOS.dmg). Open it, drag `MiddleFlickOS.app` into your Applications folder, then eject the disk image.
+Download the [`.dmg`](https://github.com/jacobfreedom/middle-click-macos-app/raw/main/MiddleFlickOS.dmg), open it, drag `MiddleFlickOS.app` into `/Applications`.
 
-**2. Bypass Gatekeeper** (first launch only)
+### 2) Gatekeeper (first launch only)
 
-Not code-signed yet. Right-click the app → Open → Confirm. Or remove the quarantine attribute via Terminal:
+Unsigned build (open-source). macOS will warn once.
 
+GUI path:
+- Right-click app -> Open -> Confirm
+
+Terminal path:
 ```bash
 xattr -cr /Applications/MiddleFlickOS.app
 ```
 
-**3. Grant Accessibility permission**
+### 3) Accessibility
 
-System Settings → Privacy & Security → Accessibility → Enable MiddleFlickOS.
+System Settings -> Privacy & Security -> Accessibility -> enable `MiddleFlickOS`.
 
-Add it manually if it doesn't appear in the list.
+If it doesn’t appear, add it manually.
 
-**Done.** Try Fn + Click.
-
----
-
-## Privacy
-
-No network access. No analytics. No telemetry. The app listens for Fn + Click and generates a middle-click event. That's it.
-
-Read every line of source. Build it yourself. Fork it.
+Done. Try Fn + Click.
 
 ---
 
-## FAQ
+## 04 / TRUST
 
-**Why not Karabiner or BetterTouchTool?**
-Those are massive apps with thousands of features. This is 83 KB. Press Fn, click, it works. No configuration, no menus. Install and forget it exists.
+No network.  
+No analytics.  
+No telemetry.
 
-**Works with [3D software]?**
-Yes. Blender, Maya, C4D, Houdini, ZBrush, whatever. It's an OS-level event — if the app accepts middle-click, it works.
+Listens for Fn + Click. Emits middle-click. That’s it.
 
-**External keyboard bug fix ETA?**
-Eventually. Or fork it and fix it. PRs welcome.
+Read the code. Build it yourself. Fork it.
 
-**Can I donate?**
-If enough people chip in to cover the $99 Apple developer fee, I'll code-sign it so you don't have to bypass Gatekeeper. Maybe even buy a proper domain. Hit me up:
+---
+
+## 05 / FAQ
+
+### Why not Karabiner / BetterTouchTool?
+
+Those tools are broad and powerful. This is intentionally narrow.
+
+### Works with [software]?
+
+Yes, if it accepts middle-click.
+
+### External keyboard fix ETA?
+
+Eventually. PRs welcome.
+
+### Donate?
+
+If enough support covers Apple’s $99 dev fee, code-signing gets easier.
+
 - Instagram: [@rolledhand](https://instagram.com/rolledhand)
 - Discord: `rolledhand`
-
-Eitherway I built this for myself and it covers my needs already.
 
 ---
 
 ## Contributing
 
-PRs welcome. The external keyboard issue is the main known bug — fixing it would be a great first contribution.
+PRs welcome.  
+Best first target: external keyboard support.
 
 ---
 
