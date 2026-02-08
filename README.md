@@ -3,9 +3,9 @@
 _middle click on macOS_
 
 Fn + Click -> Middle Click.  
-OS-level. No config. No menus. No bloat.
+OS-level. Menu bar app. No config. No bloat.
 
-- macOS 12+
+- macOS 13+
 - Intel + Apple Silicon
 - ~83 KB
 - [MIT License](LICENSE)
@@ -70,6 +70,16 @@ xattr -cr /Applications/MiddleFlickOS.app
 System Settings -> Privacy & Security -> Accessibility -> enable `MiddleFlickOS`.
 
 If it doesn’t appear, add it manually.
+
+### 4) First run behavior
+
+- MiddleFlickOS runs in the menu bar (top-right of your screen).
+- Once Accessibility is granted, it activates automatically.
+- On first successful run, it recommends enabling **Launch at Login**.
+- The menu includes:
+  - `Launch at Login` toggle
+  - `About MiddleFlickOS…` (explains privacy/update policy and links to [middleflickos.vercel.app](https://middleflickos.vercel.app))
+  - `Quit`
 
 Done. Try Fn + Click.
 

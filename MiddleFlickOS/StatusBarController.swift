@@ -3,24 +3,29 @@ import Cocoa
 final class StatusBarController: NSObject {
     private let statusItem: NSStatusItem
     private var statusLineItem: NSMenuItem?
-    private var openSettingsItem: NSMenuItem?
+    private var trusted = false
+    private var launchAtLoginEnabled = false
 
     var onOpenSettings: (() -> Void)?
+    var onToggleLaunchAtLogin: (() -> Void)?
+    var onOpenAbout: (() -> Void)?
 
     override init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         super.init()
         configureIcon()
-        rebuildMenu(trusted: false)
+        rebuildMenu()
     }
 
-    func update(trusted: Bool) {
-        rebuildMenu(trusted: trusted)
+    func update(trusted: Bool, launchAtLoginEnabled: Bool) {
+        self.trusted = trusted
+        self.launchAtLoginEnabled = launchAtLoginEnabled
+        rebuildMenu()
     }
 
     func showError(_ message: String) {
         if statusLineItem == nil {
-            rebuildMenu(trusted: false)
+            rebuildMenu()
         }
         statusLineItem?.title = message
     }
@@ -29,10 +34,10 @@ final class StatusBarController: NSObject {
         if let button = statusItem.button {
             let dimension = NSStatusBar.system.thickness
             if let image = NSImage(named: "MenuBarIcon") {
-                image.isTemplate = false
+                image.isTemplate = true
                 image.size = NSSize(width: dimension, height: dimension)
                 button.image = image
-                button.image?.isTemplate = false
+                button.image?.isTemplate = true
             } else if let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "MiddleFlickOS") {
                 image.isTemplate = true
                 image.size = NSSize(width: dimension, height: dimension)
@@ -44,7 +49,7 @@ final class StatusBarController: NSObject {
         }
     }
 
-    private func rebuildMenu(trusted: Bool) {
+    private func rebuildMenu() {
         let menu = NSMenu()
 
         let status = NSMenuItem(
@@ -63,23 +68,50 @@ final class StatusBarController: NSObject {
                 keyEquivalent: ""
             )
             settingsItem.target = self
-            openSettingsItem = settingsItem
             menu.addItem(settingsItem)
             menu.addItem(NSMenuItem.separator())
-        } else {
-            openSettingsItem = nil
         }
 
-        menu.addItem(NSMenuItem(
-            title: "Quit",
-            action: #selector(NSApplication.terminate(_:)),
-            keyEquivalent: "q"
-        ))
+        if #available(macOS 13.0, *) {
+            let launchAtLoginItem = NSMenuItem(
+                title: "Launch at Login",
+                action: #selector(toggleLaunchAtLogin),
+                keyEquivalent: ""
+            )
+            launchAtLoginItem.target = self
+            launchAtLoginItem.state = launchAtLoginEnabled ? .on : .off
+            menu.addItem(launchAtLoginItem)
+        }
+
+        let aboutItem = NSMenuItem(
+            title: "About MiddleFlickOS…",
+            action: #selector(openAbout),
+            keyEquivalent: ""
+        )
+        aboutItem.target = self
+        menu.addItem(aboutItem)
+        menu.addItem(NSMenuItem.separator())
+
+        menu.addItem(
+            NSMenuItem(
+                title: "Quit",
+                action: #selector(NSApplication.terminate(_:)),
+                keyEquivalent: "q"
+            )
+        )
 
         statusItem.menu = menu
     }
 
     @objc private func openSystemSettings() {
         onOpenSettings?()
+    }
+
+    @objc private func toggleLaunchAtLogin() {
+        onToggleLaunchAtLogin?()
+    }
+
+    @objc private func openAbout() {
+        onOpenAbout?()
     }
 }

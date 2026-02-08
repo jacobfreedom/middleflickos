@@ -28,7 +28,8 @@ func makeIconImage(size: CGFloat = 1024, background: NSColor = .clear, foregroun
     let palmWidth: CGFloat = 0.44 * w
     let palmHeight: CGFloat = 0.22 * h
     let palmX = (w - palmWidth) / 2
-    let palmY: CGFloat = 0.18 * h
+    // Keep visual center balanced when scaled down to 18x18 status bar sizes.
+    let palmY: CGFloat = 0.095 * h
     roundedRect(NSRect(x: palmX, y: palmY, width: palmWidth, height: palmHeight))
 
     // Fingers
