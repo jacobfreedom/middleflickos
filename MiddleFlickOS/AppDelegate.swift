@@ -25,11 +25,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             activateIfNeeded()
         } else {
             permissionWindow.show()
-            // Ensure the app appears in Accessibility list on first launch.
-            accessibility.requestPermissionOnce()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-                self?.openAccessibilitySettings()
-            }
         }
     }
 
@@ -74,7 +69,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func openAccessibilitySettings() {
         accessibility.openAccessibilitySettings()
-        accessibility.requestPermissionOnce()
     }
 
     private func showAddToAccessibilityPanel() {
@@ -88,7 +82,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         panel.begin { [weak self] response in
             guard response == .OK else { return }
-            _ = self?.accessibility.requestPermissionOnce()
             self?.accessibility.refreshTrust()
         }
     }

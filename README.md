@@ -74,6 +74,8 @@ If it doesn’t appear, add it manually.
 ### 4) First run behavior
 
 - MiddleFlickOS runs in the menu bar (top-right of your screen).
+- If Accessibility is not granted, a single setup window appears.
+- System Settings opens only when you click `Open System Settings`.
 - Once Accessibility is granted, it activates automatically.
 - On first successful run, it recommends enabling **Launch at Login**.
 - The menu includes:

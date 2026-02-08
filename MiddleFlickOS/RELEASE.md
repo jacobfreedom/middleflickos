@@ -35,11 +35,12 @@
    - Use `scripts/make_dmg.sh "/path/to/Exported/MiddleFlickOS.app"`.
 10. Test the DMG
    - Mount the DMG, drag app to `/Applications`, launch.
-   - Confirm first-run setup window appears and opens Accessibility settings.
+   - Confirm first-run setup window appears (no automatic System Settings popup).
+   - Confirm System Settings opens only after clicking `Open System Settings`.
    - Grant Accessibility in System Settings -> Privacy & Security -> Accessibility.
    - Confirm the menu shows `Running`.
    - Confirm `Launch at Login` toggle works.
-   - Confirm `Website` opens `https://middleflickos.vercel.app/`.
+   - Confirm `About MiddleFlickOS…` opens a panel and `Visit Website` opens `https://middleflickos.vercel.app/`.
 11. Publish
    - Upload DMG to your website or GitHub Releases.
    - Provide SHA-256 checksum and release notes.

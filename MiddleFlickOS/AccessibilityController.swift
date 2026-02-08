@@ -2,10 +2,6 @@ import Cocoa
 import ApplicationServices
 
 final class AccessibilityController {
-    private static let promptKey = "accessibilityPromptShown"
-    private static let promptLastDateKey = "accessibilityPromptLastDate"
-    private static let promptCooldownSeconds: TimeInterval = 10
-
     private var pollTimer: Timer?
     private var observers: [NSObjectProtocol] = []
 
@@ -29,26 +25,11 @@ final class AccessibilityController {
     }
 
     func refreshTrust() {
-        let trusted = checkTrusted(prompt: false)
+        let trusted = checkTrusted()
         if trusted != isTrusted {
             isTrusted = trusted
             onTrustedChange?(trusted)
         }
-    }
-
-    func requestPermissionOnce() {
-        if checkTrusted(prompt: false) {
-            UserDefaults.standard.set(true, forKey: Self.promptKey)
-            return
-        }
-
-        let lastPrompt = UserDefaults.standard.object(forKey: Self.promptLastDateKey) as? Date
-        if let lastPrompt, Date().timeIntervalSince(lastPrompt) < Self.promptCooldownSeconds {
-            return
-        }
-
-        _ = checkTrusted(prompt: true)
-        UserDefaults.standard.set(Date(), forKey: Self.promptLastDateKey)
     }
 
     func openAccessibilitySettings() {
@@ -83,8 +64,8 @@ final class AccessibilityController {
         })
     }
 
-    private func checkTrusted(prompt: Bool) -> Bool {
-        let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: prompt] as CFDictionary
+    private func checkTrusted() -> Bool {
+        let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: false] as CFDictionary
         return AXIsProcessTrustedWithOptions(opts)
     }
 }
