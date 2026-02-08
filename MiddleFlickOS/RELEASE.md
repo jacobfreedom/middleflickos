@@ -37,6 +37,7 @@
    - Mount the DMG, drag app to `/Applications`, launch.
    - Confirm first-run setup window appears (no automatic System Settings popup).
    - Confirm System Settings opens only after clicking `Open System Settings`.
+   - Confirm setup window has a single action button (`Open System Settings`).
    - Grant Accessibility in System Settings -> Privacy & Security -> Accessibility.
    - Confirm the menu shows `Running`.
    - Confirm `Launch at Login` toggle works.

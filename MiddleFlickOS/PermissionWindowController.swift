@@ -4,7 +4,6 @@ final class PermissionWindowController: NSObject {
     private var window: NSWindow?
 
     var onOpenSettings: (() -> Void)?
-    var onAddToAccessibility: (() -> Void)?
 
     func show() {
         if let window {
@@ -13,7 +12,7 @@ final class PermissionWindowController: NSObject {
         }
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 460, height: 260),
+            contentRect: NSRect(x: 0, y: 0, width: 430, height: 220),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -41,13 +40,10 @@ final class PermissionWindowController: NSObject {
         titleField.font = .boldSystemFont(ofSize: 15)
 
         let messageField = NSTextField(wrappingLabelWithString:
-            "MiddleFlickOS is a menu bar app (top-right of your screen). " +
-            "It needs Accessibility permission to convert Fn+Click " +
-            "into a Middle Click.\n\n" +
-            "Open System Settings → Privacy & Security → Accessibility, " +
-            "then enable MiddleFlickOS. If it doesn't appear, click " +
-            "“Add to Accessibility…” to manually select /Applications/MiddleFlickOS.app.\n\n" +
-            "This app will activate automatically once permission is granted."
+            "MiddleFlickOS needs Accessibility to convert Fn+Click into Middle Click.\n\n" +
+            "1) Click Open System Settings.\n" +
+            "2) Enable MiddleFlickOS in Privacy & Security > Accessibility.\n\n" +
+            "This window closes automatically once permission is granted."
         )
         messageField.font = .systemFont(ofSize: 13)
 
@@ -64,14 +60,7 @@ final class PermissionWindowController: NSObject {
         openButton.bezelStyle = .rounded
         openButton.keyEquivalent = "\r"
 
-        let addButton = NSButton(
-            title: "Add to Accessibility…",
-            target: self,
-            action: #selector(addToAccessibilityPressed)
-        )
-        addButton.bezelStyle = .rounded
-
-        let buttonStack = NSStackView(views: [addButton, openButton])
+        let buttonStack = NSStackView(views: [openButton])
         buttonStack.orientation = .horizontal
         buttonStack.alignment = .centerY
         buttonStack.spacing = 8
@@ -111,9 +100,5 @@ final class PermissionWindowController: NSObject {
 
     @objc private func openSettingsPressed() {
         onOpenSettings?()
-    }
-
-    @objc private func addToAccessibilityPressed() {
-        onAddToAccessibility?()
     }
 }

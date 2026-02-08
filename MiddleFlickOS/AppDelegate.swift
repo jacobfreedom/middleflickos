@@ -1,7 +1,6 @@
 import Cocoa
 import ApplicationServices
 import ServiceManagement
-import UniformTypeIdentifiers
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -45,10 +44,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self?.openAccessibilitySettings()
         }
 
-        permissionWindow.onAddToAccessibility = { [weak self] in
-            self?.showAddToAccessibilityPanel()
-        }
-
         accessibility.onTrustedChange = { [weak self] trusted in
             self?.handleTrustChange(isTrusted: trusted)
         }
@@ -69,21 +64,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func openAccessibilitySettings() {
         accessibility.openAccessibilitySettings()
-    }
-
-    private func showAddToAccessibilityPanel() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        panel.canChooseFiles = true
-        panel.allowedContentTypes = [.application]
-        panel.directoryURL = URL(fileURLWithPath: "/Applications", isDirectory: true)
-        panel.nameFieldStringValue = "MiddleFlickOS.app"
-
-        panel.begin { [weak self] response in
-            guard response == .OK else { return }
-            self?.accessibility.refreshTrust()
-        }
     }
 
     private func activateIfNeeded() {

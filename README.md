@@ -69,7 +69,7 @@ xattr -cr /Applications/MiddleFlickOS.app
 
 System Settings -> Privacy & Security -> Accessibility -> enable `MiddleFlickOS`.
 
-If it doesn’t appear, add it manually.
+If it doesn’t appear immediately, close and reopen System Settings once.
 
 ### 4) First run behavior
 
